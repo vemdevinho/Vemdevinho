@@ -1773,16 +1773,16 @@ const WINES = RAW_WINES.map((w) => {
    não é mais perguntado aqui — ele se calibra sozinho a partir do
    feedback (thumbs up/down) em vinhos de região emergente, em giveFeedback(). */
 const VIVENCIA_QUESTIONS = [
-  { key: "body", text: "Qual textura te dá mais prazer na boca?", options: [
-    { label: "Leve e fluido", value: 2 }, { label: "Médio, equilibrado", value: 5 }, { label: "Denso e envolvente", value: 8 } ] },
-  { key: "acid", text: "O que faz sua boca salivar de satisfação?", options: [
-    { label: "Prefiro macio, quase sem acidez", value: 2 }, { label: "Equilíbrio entre frescor e suavidade", value: 5 }, { label: "Adoro uma acidez vibrante", value: 8 } ] },
-  { key: "tannin", text: "Como você gosta daquela sensação de secura na boca?", options: [
+  { key: "body", text: "Como prefere a textura e o corpo do vinho?", options: [
+    { label: "Leve, sutil e delicado", value: 2 }, { label: "Médio e equilibrado", value: 5 }, { label: "Forte e encorpado", value: 8 } ] },
+  { key: "acid", text: "Como prefere a acidez e salivação na boca?", options: [
+    { label: "Macio, quase sem acidez", value: 2 }, { label: "Fresco porém equilibrado", value: 5 }, { label: "Adoro uma acidez salivante", value: 8 } ] },
+  { key: "tannin", text: "Como gosta dos taninos e da sensação de secura na boca?", options: [
     { label: "Quase imperceptível", value: 2 }, { label: "Presente, mas macia", value: 5 }, { label: "Firme, quase mastigável", value: 8 } ] },
-  { key: "fruitOak", compound: true, text: "Qual desses estilos mais te atrai?", options: [
-    { label: "Compota e passas, com toque de madeira evidente", id: "compota_madeira", value: { fruit: 2, oak: 7 } },
-    { label: "Fruta madura, com um toque sutil de carvalho", id: "madura_sutil", value: { fruit: 5, oak: 5 } },
-    { label: "Fruta fresca e crocante, sem madeira", id: "fresca_pura", value: { fruit: 8, oak: 1 } } ] },
+  { key: "fruitOak", compound: true, text: "Qual desses aromas e sabores você prefere?", options: [
+    { label: "Compota e passas, bem amadeirado", id: "compota_madeira", value: { fruit: 2, oak: 7 } },
+    { label: "Frutas maduras, com madeira leve e sutil", id: "madura_sutil", value: { fruit: 5, oak: 5 } },
+    { label: "Frutas frescas, sem madeira.", id: "fresca_pura", value: { fruit: 8, oak: 1 } } ] },
   { type: "tipoCombo", text: "E sobre tipos de vinho?",
     rejectOptions: [
       { label: "Tinto", value: "Tinto" }, { label: "Branco", value: "Branco" },
@@ -2148,16 +2148,16 @@ export default function AppVemDeVinho() {
     (async () => {
       let uid = null;
       try {
-        const idRes = await window.storage.get("user-id", false);
+        const idRes = await Promise.resolve({ value: localStorage.getItem("user-id") });
         if (idRes && idRes.value) uid = idRes.value;
       } catch (e) { /* primeira visita, sem id ainda */ }
       if (!uid) {
         uid = genUserId();
-        try { await window.storage.set("user-id", uid, false); } catch (e) {}
+        try { localStorage.setItem("user-id", uid); } catch (e) {}
       }
       setUserId(uid);
       try {
-        const res = await window.storage.get("perfil-vivencia", false);
+        const res = await Promise.resolve({ value: localStorage.getItem("perfil-vivencia") });
         if (res && res.value) setProfile(JSON.parse(res.value));
       } catch (e) { /* sem perfil salvo ainda */ }
       setStage("landing");
@@ -2173,7 +2173,7 @@ export default function AppVemDeVinho() {
 
   const saveProfile = async (p) => {
     try {
-      await window.storage.set("perfil-vivencia", JSON.stringify(p), false);
+      localStorage.setItem("perfil-vivencia", JSON.stringify(p));
     } catch (e) {
       setStorageError(true);
     }
@@ -2284,11 +2284,11 @@ export default function AppVemDeVinho() {
   // (processado automaticamente pela rotina de limpeza — ver schema.sql).
   const requestDeletion = async () => {
     await supabaseInsert("deletion_requests", { anon_id: userId });
-    try { await window.storage.delete("perfil-vivencia", false); } catch (e) {}
-    try { await window.storage.delete("user-id", false); } catch (e) {}
+    try { localStorage.removeItem("perfil-vivencia"); } catch (e) {}
+    try { localStorage.removeItem("user-id"); } catch (e) {}
     const novoId = genUserId();
     setUserId(novoId);
-    try { await window.storage.set("user-id", novoId, false); } catch (e) {}
+    try { localStorage.setItem("user-id", novoId); } catch (e) {}
     setProfile(null);
     setConfirmDelete(false);
     setDeleteDone(true);
