@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { ChevronRight, ArrowLeft, ThumbsUp, ThumbsDown, RotateCcw, Check, Copy, HelpCircle } from "lucide-react";
+import { ChevronRight, ArrowLeft, ThumbsUp, ThumbsDown, RotateCcw, Check, Copy, HelpCircle, ShoppingBag } from "lucide-react";
 
 /* ============================================================
    VEM DE VINHO — protótipo do método 4Vs do Vinho
@@ -1991,7 +1991,8 @@ function ComoFunciona({ onVoltar, onComecar, labelBotao }) {
     <div>
       <button className="ec-back" onClick={onVoltar}><ArrowLeft size={15}/> voltar</button>
       <div className="ec-eyebrow"><LogoMark size={14}/> como funciona</div>
-      <p className="ec-p" style={{ marginBottom: 18 }}>São duas fases rápidas. A primeira você faz uma vez só.</p>
+      <h2 className="ec-h2 ec-como-titulo">São duas fases rápidas.</h2>
+      <p className="ec-como-sub">A primeira você faz <b>uma vez só</b>.</p>
 
       <div className="ec-fase-card">
         <span className="ec-fase-badge">1</span>
@@ -2006,6 +2007,14 @@ function ComoFunciona({ onVoltar, onComecar, labelBotao }) {
         <div>
           <h3 className="ec-fase-title">Este momento</h3>
           <p className="ec-fase-text">Ajustamos para a ocasião de hoje: orçamento, comida e clima. <b>Toda vez que quiser um vinho.</b></p>
+        </div>
+      </div>
+
+      <div className="ec-aviso-compra">
+        <ShoppingBag size={20} />
+        <div>
+          <p className="ec-aviso-titulo">Aqui você só recebe a recomendação</p>
+          <p className="ec-aviso-text">O Vem de Vinho <b>não tem cadastro</b> e não vende vinho. A compra é feita em <b>apps parceiros</b> (como o CompreVinho), que pedem cadastro para concluir a venda.</p>
         </div>
       </div>
 
@@ -2441,6 +2450,16 @@ export default function AppVemDeVinho() {
         }
         .ec-option:hover { border-color: var(--ec-accent); }
         .ec-option--selected { border-color: var(--ec-accent); background: rgba(122,30,51,0.1); color: var(--ec-accent); }
+        .ec-como-titulo { font-size: 30px; line-height: 1.15; margin: 0 0 6px; color: var(--ec-text); }
+        .ec-como-sub { font-family: 'Fraunces', serif; font-size: 20px; line-height: 1.3; color: var(--ec-accent);
+          margin: 0 0 22px; font-weight: 500; }
+        .ec-como-sub b { font-style: italic; font-weight: 600; }
+        .ec-aviso-compra { display: flex; gap: 12px; align-items: flex-start; margin-top: 18px; padding: 14px 16px;
+          border: 1px dashed var(--ec-accent-warm); border-radius: 14px; background: rgba(156,106,46,0.07); color: var(--ec-accent-warm); }
+        .ec-aviso-compra svg { flex: none; margin-top: 2px; }
+        .ec-aviso-titulo { font-family: 'IBM Plex Sans', sans-serif; font-size: 14px; font-weight: 600; color: var(--ec-text); margin: 0 0 3px; }
+        .ec-aviso-text { font-size: 13.5px; line-height: 1.5; color: var(--ec-muted); margin: 0; }
+        .ec-aviso-text b { color: var(--ec-text); font-weight: 600; }
         .ec-phases { display: flex; align-items: center; gap: 8px; margin-bottom: 18px; }
         .ec-phase { display: inline-flex; align-items: center; gap: 7px; font-family: 'IBM Plex Sans', sans-serif;
           font-size: 12.5px; font-weight: 500; color: var(--ec-faint); border: 1px solid var(--ec-line);
